@@ -24,4 +24,9 @@ Route::name('post.')->prefix('posts')->group( function(){
     Route::get('/{post:slug}', 'PostController@show')->name('show');
 });
 
+Route::name('tag.')->prefix('tags')->group( function(){
+    Route::get('/', 'TagController@index')->name('index');
+    Route::get('/{tag:slug}', 'TagController@show')->name('show');
+});
+
 Route::get('/home', 'HomeController@index')->name('home');
