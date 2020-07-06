@@ -19,4 +19,9 @@ Route::get('/', function () {
 
 Auth::routes();
 
+Route::name('post.')->prefix('posts')->group( function(){
+    Route::get('/', 'PostController@index')->name('index');
+    Route::get('/{post:slug}', 'PostController@show')->name('show');
+});
+
 Route::get('/home', 'HomeController@index')->name('home');
