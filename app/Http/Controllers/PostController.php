@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Post;
+use Illuminate\Auth\Access\Response;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 
 class PostController extends Controller
 {
@@ -14,7 +16,10 @@ class PostController extends Controller
      */
     public function index()
     {
-        return view('post.index', ['posts' => Post::published()->get()]);
+        return view('post.index', [
+            'posts' => Post::published()
+                ->get()
+        ]);
     }
 
     /**
@@ -46,6 +51,10 @@ class PostController extends Controller
      */
     public function show(Post $post)
     {
+        if (Gate::denies('view', $post)) {
+            abort(404, 'Not Found');
+        }
+
         return view('post.show', ['post' => $post]);
     }
 

@@ -21,7 +21,11 @@ Auth::routes();
 
 Route::name('post.')->prefix('posts')->group( function(){
     Route::get('/', 'PostController@index')->name('index');
+    Route::get('/create', 'PostController@create')->name('new')->middleware('can:create,App\Post');
+    Route::get('/edit/{post}', 'PostController@edit')->name('edit')->middleware('can:update,post');
     Route::get('/{post:slug}', 'PostController@show')->name('show');
+
+    Route::delete('/{post}', 'PostController@destroy')->name('delete')->middleware('can:delete,post');
 });
 
 Route::name('tag.')->prefix('tags')->group( function(){
