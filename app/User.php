@@ -49,6 +49,11 @@ class User extends Authenticatable
 
     public function role()
     {
-        return $this->belongsTo(Role::class);
+        return $this->belongsTo(Role::class)->withDefault(function(){
+            return new Role([
+                'name' => 'NO_ROLE',
+                'label' => 'NO_ROLE'
+            ]);
+        });
     }
 }

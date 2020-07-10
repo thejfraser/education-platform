@@ -6,6 +6,7 @@ use App\Post;
 use App\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 use Illuminate\Auth\Access\Response;
+use Illuminate\Support\Facades\Gate;
 
 class PostPolicy
 {
@@ -20,11 +21,19 @@ class PostPolicy
      */
     public function view(?User $user, Post $post)
     {
-        if (is_null($post->published_at) && !$post->author->is($user)) {
-            return false;
+        if (!is_null($post->published_at)) {
+            return true;
         }
 
-        return true;
+        if ($post->author->is($user)) {
+            return true;
+        }
+
+        if (Gate::allows('user-can', 'edit-any-posts')) {
+            return true;
+        }
+
+        return false;
     }
 
     /**

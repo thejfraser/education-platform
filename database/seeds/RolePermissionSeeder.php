@@ -14,21 +14,21 @@ class RolePermissionSeeder extends Seeder
     public function run()
     {
         $permissionsToCreate = [
-            ['name' => 'full_admin', 'label' => 'Full Admin'],
-            ['name' => 'manage_roles', 'label' => 'Manage Roles'],
-            ['name' => 'manage_permissions', 'label' => 'Manage Permissions'],
-            ['name' => 'can_comment', 'label' => 'Can Comment'],
-            ['name' => 'moderate_comments', 'label' => 'Moderate Comments'],
-            ['name' => 'edit_published_posts', 'label' => 'Edit Published Posts'],
-            ['name' => 'delete_published_posts', 'label' => 'Delete Published Posts'],
-            ['name' => 'publish_any_posts', 'label' => 'Publish Any Posts'],
-            ['name' => 'edit_any_posts', 'label' => 'Edit Any Posts'],
-            ['name' => 'delete_any_posts', 'label' => 'Delete Any Posts'],
-            ['name' => 'publish_own_posts', 'label' => 'Publish Own Posts'],
-            ['name' => 'edit_own_posts', 'label' => 'Edit Own Posts'],
-            ['name' => 'delete_own_posts', 'label' => 'Delete Own Posts'],
-            ['name' => 'create_tags', 'label' => 'Create Tags'],
-            ['name' => 'delete_tags', 'label' => 'Delete Tags']
+            ['name' => 'full-admin', 'label' => 'Full Admin'],
+            ['name' => 'manage-roles', 'label' => 'Manage Roles'],
+            ['name' => 'manage-permissions', 'label' => 'Manage Permissions'],
+            ['name' => 'can-comment', 'label' => 'Can Comment'],
+            ['name' => 'moderate-comments', 'label' => 'Moderate Comments'],
+            ['name' => 'edit-published-posts', 'label' => 'Edit Published Posts'],
+            ['name' => 'delete-published-posts', 'label' => 'Delete Published Posts'],
+            ['name' => 'publish-any-posts', 'label' => 'Publish Any Posts'],
+            ['name' => 'edit-any-posts', 'label' => 'Edit Any Posts'],
+            ['name' => 'delete-any-posts', 'label' => 'Delete Any Posts'],
+            ['name' => 'publish-own-posts', 'label' => 'Publish Own Posts'],
+            ['name' => 'edit-own-posts', 'label' => 'Edit Own Posts'],
+            ['name' => 'delete-own-posts', 'label' => 'Delete Own Posts'],
+            ['name' => 'create-tags', 'label' => 'Create Tags'],
+            ['name' => 'delete-tags', 'label' => 'Delete Tags']
         ];
         $rolesToCreate = [
             ['name' => 'admin', 'label' => 'Admin'],
@@ -38,27 +38,27 @@ class RolePermissionSeeder extends Seeder
         ];
         $rolePermissions = [
             'admin' => [
-                'full_admin',
+                'full-admin',
             ],
             'publisher' => [
-                'can_comment',
-                'moderate_comments',
-                'edit_published_posts',
-                'delete_published_posts',
-                'publish_any_posts',
-                'edit_any_posts',
-                'delete_any_posts',
-                'create_tags',
-                'delete_tags',
+                'can-comment',
+                'moderate-comments',
+                'edit-published-posts',
+                'delete-published-posts',
+                'publish-any-posts',
+                'edit-any-posts',
+                'delete-any-posts',
+                'create-tags',
+                'delete-tags',
             ],
             'author' => [
-                'can_comment',
-                'moderate_comments',
-                'edit_own_posts',
-                'delete_own_posts',
+                'can-comment',
+                'moderate-comments',
+                'edit-own-posts',
+                'delete-own-posts',
             ],
             'user' => [
-                'can_comment',
+                'can-comment',
             ]
         ];
 
