@@ -15,8 +15,8 @@ class PostPolicy
     /**
      * Determine whether the user can view the model.
      *
-     * @param  \App\User  $user
-     * @param  \App\Post  $post
+     * @param \App\User $user
+     * @param \App\Post $post
      * @return mixed
      */
     public function view(?User $user, Post $post)
@@ -25,11 +25,11 @@ class PostPolicy
             return true;
         }
 
-        if ($post->author->is($user)) {
-            return true;
+        if (is_null($user)) {
+            return false;
         }
 
-        if (Gate::allows('user-can', 'edit-any-posts')) {
+        if (is_null($post->published_at) && ($post->author->is($user) || $user->can('edit-any-posts'))) {
             return true;
         }
 
@@ -39,7 +39,7 @@ class PostPolicy
     /**
      * Determine whether the user can create models.
      *
-     * @param  \App\User  $user
+     * @param \App\User $user
      * @return mixed
      */
     public function create(User $user)
@@ -50,32 +50,48 @@ class PostPolicy
     /**
      * Determine whether the user can update the model.
      *
-     * @param  \App\User  $user
-     * @param  \App\Post  $post
+     * @param \App\User $user
+     * @param \App\Post $post
      * @return mixed
      */
     public function update(User $user, Post $post)
     {
-        return $post->author->is($user);
+        if (!is_null($post->published_at) && ($post->author->is($user) || $user->can('edit-any-posts')) && $user->can('including-published-posts')) {
+            return true;
+        }
+
+        if (is_null($post->published_at) && ($post->author->is($user) || $user->can('edit-any-posts'))) {
+            return true;
+        }
+
+        return false;
     }
 
     /**
      * Determine whether the user can delete the model.
      *
-     * @param  \App\User  $user
-     * @param  \App\Post  $post
+     * @param \App\User $user
+     * @param \App\Post $post
      * @return mixed
      */
     public function delete(User $user, Post $post)
     {
-        return $post->author->is($user);
+        if (!is_null($post->published_at) && ($post->author->is($user) || $user->can('delete-any-posts')) && $user->can('including-published-posts')) {
+            return true;
+        }
+
+        if (is_null($post->published_at) && ($post->author->is($user) || $user->can('delete-any-posts'))) {
+            return true;
+        }
+
+        return false;
     }
 
     /**
      * Determine whether the user can restore the model.
      *
-     * @param  \App\User  $user
-     * @param  \App\Post  $post
+     * @param \App\User $user
+     * @param \App\Post $post
      * @return mixed
      */
     public function restore(User $user, Post $post)
@@ -86,8 +102,8 @@ class PostPolicy
     /**
      * Determine whether the user can permanently delete the model.
      *
-     * @param  \App\User  $user
-     * @param  \App\Post  $post
+     * @param \App\User $user
+     * @param \App\Post $post
      * @return mixed
      */
     public function forceDelete(User $user, Post $post)

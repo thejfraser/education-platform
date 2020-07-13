@@ -26,12 +26,14 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->registerPolicies();
 
-        Gate::define('user-can', function(User $user, $permission){
-            return $user->role->permissions->pluck('name')->contains($permission);
-        });
-
         Gate::before(function(User $user) {
             if ($user->role->permissions->pluck('name')->contains('full_admin')) {
+                return true;
+            }
+        });
+
+        Gate::before(function(User $user, $permission) {
+            if ($user->role->permissions->pluck('name')->contains($permission)) {
                 return true;
             }
         });
