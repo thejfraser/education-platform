@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Post;
-use Illuminate\Auth\Access\Response;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 
@@ -12,13 +11,21 @@ class PostController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @param int|null $page
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Http\Response|\Illuminate\View\View
+     * @throws \Exception
      */
-    public function index()
+    public function index(?int $page = 1)
     {
+        $page = max($page, 1) - 1;
+        $postCount = Post::published()->count();
+        $offset = $page * 3;
+        if ($offset > $postCount) {
+            abort(404);
+        }
+
         return view('post.index', [
-            'posts' => Post::published()
-                ->get()
+            'posts' => Post::published()->latest('published_at')->limit(3)->skip($offset)->get()
         ]);
     }
 
