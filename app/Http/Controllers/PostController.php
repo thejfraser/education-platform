@@ -17,15 +17,16 @@ class PostController extends Controller
      */
     public function index(?int $page = 1)
     {
+        $postsPerPage = config('ep.posts_per_page');
         $page = max($page, 1) - 1;
         $postCount = Post::published()->count();
-        $offset = $page * 3;
+        $offset = $page * $postsPerPage;
         if ($offset > $postCount) {
             abort(404);
         }
 
         return view('post.index', [
-            'posts' => Post::published()->latest('published_at')->limit(3)->skip($offset)->get()
+            'posts' => Post::published()->latest('published_at')->limit($postsPerPage)->skip($offset)->get()
         ]);
     }
 
