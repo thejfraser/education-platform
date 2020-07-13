@@ -5,7 +5,7 @@ namespace App\View\Components;
 use App\Post;
 use Illuminate\View\Component;
 
-class ListPost extends Component
+class ListPostComponent extends Component
 {
     public $post;
 

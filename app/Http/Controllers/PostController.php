@@ -26,7 +26,9 @@ class PostController extends Controller
         }
 
         return view('post.index', [
-            'posts' => Post::published()->latest('published_at')->limit($postsPerPage)->skip($offset)->get()
+            'posts' => Post::published()->latest('published_at')->limit($postsPerPage)->skip($offset)->get(),
+            'maxPage' => ceil($postCount/$postsPerPage),
+            'page' => $page+1
         ]);
     }
 
