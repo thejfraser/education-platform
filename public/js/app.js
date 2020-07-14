@@ -1917,12 +1917,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: ['href']
+  props: ['href', 'title']
 });
 
 /***/ }),
@@ -1936,6 +1932,16 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -37591,18 +37597,21 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "col-12 mb-2" }, [
-    _c("div", { staticClass: "card" }, [
-      _c("div", { staticClass: "card-header" }, [
-        _c("h3", { staticClass: "card-title" }, [_vm._t("title")], 2)
-      ]),
+  return _c("div", { staticClass: "col-12 mb-5 pb-5 border-bottom" }, [
+    _c("h2", { staticClass: "card-title" }, [_vm._v(_vm._s(_vm.title))]),
+    _vm._v(" "),
+    _c("div", { staticClass: "text-muted" }, [
+      _c("p", [_vm._t("default")], 2),
       _vm._v(" "),
-      _c("div", { staticClass: "card-body" }, [
-        _c("p", [_vm._t("default")], 2),
-        _vm._v(" "),
-        _c("p", { staticClass: "text-right" }, [
-          _c("a", { attrs: { href: _vm.href } }, [_vm._v("Read More...")])
-        ])
+      _c("div", { staticClass: "text-right" }, [
+        _c(
+          "a",
+          {
+            staticClass: "btn btn-sm btn-outline-primary",
+            attrs: { href: _vm.href }
+          },
+          [_vm._v("Read More...")]
+        )
       ])
     ])
   ])
@@ -37646,9 +37655,9 @@ var render = function() {
               expression: "loading"
             }
           ],
-          staticClass: "jumbotron text-center"
+          staticClass: "text-center"
         },
-        [_c("p", { staticClass: "display-4" }, [_vm._v("Loading")])]
+        [_vm._m(0)]
       ),
       _vm._v(" "),
       _c(
@@ -37667,22 +37676,7 @@ var render = function() {
         _vm._l(_vm.posts, function(post) {
           return _c(
             "post-excerpt",
-            {
-              key: post.id,
-              attrs: { href: post.href },
-              scopedSlots: _vm._u(
-                [
-                  {
-                    key: "title",
-                    fn: function(title) {
-                      return [_vm._v(_vm._s(post.title))]
-                    }
-                  }
-                ],
-                null,
-                true
-              )
-            },
+            { key: post.id, attrs: { href: post.href, title: post.title } },
             [_vm._v("\n            " + _vm._s(post.excerpt) + "\n        ")]
           )
         }),
@@ -37704,7 +37698,7 @@ var render = function() {
         },
         [
           _c("div", { staticClass: "col-12" }, [
-            _c("section", { staticClass: "pagination bg-light" }, [
+            _c("section", { staticClass: "pagination" }, [
               _c(
                 "nav",
                 {
@@ -37782,7 +37776,22 @@ var render = function() {
     2
   )
 }
-var staticRenderFns = []
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "text-center" }, [
+      _c("div", { staticClass: "spinner-grow", attrs: { role: "none" } }),
+      _vm._v("\n             \n            "),
+      _c("div", { staticClass: "spinner-grow", attrs: { role: "status" } }, [
+        _c("span", { staticClass: "sr-only" }, [_vm._v("Loading...")])
+      ]),
+      _vm._v("\n             \n            "),
+      _c("div", { staticClass: "spinner-grow", attrs: { role: "none" } })
+    ])
+  }
+]
 render._withStripped = true
 
 

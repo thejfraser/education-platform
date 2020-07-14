@@ -1,18 +1,28 @@
 <template>
     <section class="post-list">
         <slot></slot>
-        <div class="jumbotron text-center" v-show="loading">
-            <p class="display-4">Loading</p>
+
+        <div class="text-center" v-show="loading">
+            <div class="text-center">
+                <div class="spinner-grow" role="none"></div>
+                &nbsp;
+                <div class="spinner-grow" role="status">
+                    <span class="sr-only">Loading...</span>
+                </div>
+                &nbsp;
+                <div class="spinner-grow" role="none"></div>
+            </div>
         </div>
+
         <div class="row" v-show="!loading">
-            <post-excerpt v-for="post in posts" v-bind:key="post.id" :href="post.href">
-                <template v-slot:title="title">{{post.title}}</template>
+            <post-excerpt v-for="post in posts" v-bind:key="post.id" :href="post.href" :title="post.title">
                 {{post.excerpt}}
             </post-excerpt>
         </div>
+
         <div class="row" v-show="!loading">
             <div class="col-12">
-                <section class="pagination bg-light">
+                <section class="pagination">
                     <nav aria-label="Page Navigation" class="mx-auto">
                         <ul class="pagination m-0">
                             <li v-for="link in links" v-show="link.show">
