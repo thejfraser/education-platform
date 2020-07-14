@@ -5,10 +5,15 @@
         <section>
             <header class="mb-4">
                 <h1>{{$post->title}}</h1>
-                <p><em>Written by {{$post->author->name}}</em></p>
+                <p><em>Written by {{$post->author->name}}</em>@if ($post->published_at !== null) &bull; Published <time>{{$post->published_at->format('l jS F Y H:i')}}</time>@endif</p>
             </header>
-            <main>
-                {!! nl2br($post->body)  !!}
+            <main class="row align-items-stretch">
+                <div class="col-12 col-md-8 col-lg-9">
+                    {!! nl2br($post->body)  !!}
+                </div>
+                <div class="col-12 col-md-4 col-lg-3 bg-light py-3">
+                    <em>Items</em>
+                </div>
             </main>
             <footer>
                 @forelse($post->tags as $tag)

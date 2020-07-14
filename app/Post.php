@@ -14,6 +14,10 @@ class Post extends Model
     use SoftDeletes;
     use CanPublishTrait;
 
+    protected $casts = [
+        'published_at' => 'datetime'
+    ];
+
     public function author() {
         return $this->belongsTo(User::class, 'author_id');
     }
