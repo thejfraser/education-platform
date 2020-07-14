@@ -15,20 +15,35 @@ class PostController extends Controller
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Http\Response|\Illuminate\View\View
      * @throws \Exception
      */
-    public function index(?int $page = 1)
+    public function index(Request $request, ?int $page = 1)
     {
         $postsPerPage = config('ep.posts_per_page');
         $page = max($page, 1) - 1;
-        $postCount = Post::published()->count();
+        $postCount = Post::published()
+            ->count();
         $offset = $page * $postsPerPage;
         if ($offset > $postCount) {
             abort(404);
         }
 
+        $posts = Post::published()
+            ->latest('published_at')
+            ->limit($postsPerPage)
+            ->skip($offset)
+            ->get();
+        if ($request->isXmlHttpRequest()) {
+            $posts->each(function ($post) {
+                $post->href = route('post.show', [$post->slug]);
+
+                return $post;
+            });
+
+            return $posts;
+        }
+
         return view('post.index', [
-            'posts' => Post::published()->latest('published_at')->limit($postsPerPage)->skip($offset)->get(),
-            'maxPage' => ceil($postCount/$postsPerPage),
-            'page' => $page+1
+            'maxPage' => ceil($postCount / $postsPerPage),
+            'page' => $page + 1
         ]);
     }
 
