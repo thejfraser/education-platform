@@ -1965,10 +1965,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: ['page', 'maxPage'],
+  props: ['page', 'maxPage', 'baseUrl'],
   data: function data() {
     return {
       posts: [],
@@ -1977,17 +1975,8 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   computed: {
-    pageLess2: function pageLess2() {
-      return this.currentPage - 2;
-    },
-    pageLess1: function pageLess1() {
-      return this.currentPage - 1;
-    },
-    pageMore1: function pageMore1() {
-      return this.currentPage + 1;
-    },
-    pageMore2: function pageMore2() {
-      return this.currentPage + 2;
+    links: function links() {
+      return [this.generateLink(this.currentPage - 1, 'Previous'), this.generateLink(this.currentPage - 2), this.generateLink(this.currentPage - 1), this.generateLink(this.currentPage), this.generateLink(this.currentPage + 1), this.generateLink(this.currentPage + 2), this.generateLink(this.currentPage + 1, 'Next')];
     }
   },
   created: function created() {
@@ -2000,19 +1989,33 @@ __webpack_require__.r(__webpack_exports__);
     });
   },
   methods: {
-    nextPage: function nextPage() {
-      if (this.currentPage >= this.maxPage) {
-        return false;
+    generateLink: function generateLink(page) {
+      var text = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
+      var link = {
+        show: false,
+        text: text,
+        page: page,
+        current: false,
+        href: "".concat(this.baseUrl, "/").concat(page)
+      };
+
+      if (page === 1) {
+        link.href = this.baseUrl;
       }
 
-      this.get(this.currentPage + 1);
-    },
-    prevPage: function prevPage() {
-      if (this.currentPage <= 1) {
-        return false;
+      if (page === this.currentPage) {
+        link.current = true;
       }
 
-      this.get(this.currentPage - 1);
+      if (page >= 1 && page <= this.maxPage) {
+        link.show = true;
+      }
+
+      if (text === null) {
+        link.text = link.page;
+      }
+
+      return link;
     },
     jumpPage: function jumpPage(page) {
       if (parseInt(page) === this.currentPage) {
@@ -2029,14 +2032,14 @@ __webpack_require__.r(__webpack_exports__);
       }
 
       this.loading = true;
-      axios.get('/posts/' + page).then(function (data) {
+      axios.get("".concat(this.baseUrl).concat(page)).then(function (data) {
         _this2.loading = false;
         _this2.currentPage = page;
         _this2.posts = data.data;
         window.history.pushState({
           posts: _this2.posts,
           currentPage: _this2.currentPage
-        }, '', '/posts/' + (_this2.currentPage > 1 ? _this2.currentPage : ''));
+        }, '', _this2.baseUrl + (_this2.currentPage > 1 ? "".concat(_this2.currentPage) : ''));
         window.scrollTo(0, 0);
       });
     }
@@ -37709,199 +37712,66 @@ var render = function() {
                   attrs: { "aria-label": "Page Navigation" }
                 },
                 [
-                  _c("ul", { staticClass: "pagination m-0" }, [
-                    _c(
-                      "li",
-                      {
-                        directives: [
-                          {
-                            name: "show",
-                            rawName: "v-show",
-                            value: _vm.currentPage > 1,
-                            expression: "currentPage > 1"
-                          }
-                        ],
-                        staticClass: "page-item"
-                      },
-                      [
-                        _c(
-                          "a",
-                          {
-                            staticClass: "page-link",
-                            attrs: { href: "#prev" },
-                            on: {
-                              click: function($event) {
-                                $event.preventDefault()
-                                return _vm.prevPage($event)
-                              }
+                  _c(
+                    "ul",
+                    { staticClass: "pagination m-0" },
+                    _vm._l(_vm.links, function(link) {
+                      return _c(
+                        "li",
+                        {
+                          directives: [
+                            {
+                              name: "show",
+                              rawName: "v-show",
+                              value: link.show,
+                              expression: "link.show"
                             }
-                          },
-                          [_vm._v("Previous")]
-                        )
-                      ]
-                    ),
-                    _vm._v(" "),
-                    _c(
-                      "li",
-                      {
-                        directives: [
-                          {
-                            name: "show",
-                            rawName: "v-show",
-                            value: _vm.pageLess2 > 0,
-                            expression: "pageLess2 > 0"
-                          }
-                        ],
-                        staticClass: "page-item"
-                      },
-                      [
-                        _c(
-                          "a",
-                          {
-                            staticClass: "page-link",
-                            attrs: { href: "#less2" },
-                            on: {
-                              click: function($event) {
-                                $event.preventDefault()
-                                return _vm.jumpPage(_vm.pageLess2)
+                          ]
+                        },
+                        [
+                          _c(
+                            "a",
+                            {
+                              directives: [
+                                {
+                                  name: "show",
+                                  rawName: "v-show",
+                                  value: !link.current,
+                                  expression: "!link.current"
+                                }
+                              ],
+                              staticClass: "page-link",
+                              attrs: { href: link.href },
+                              on: {
+                                click: function($event) {
+                                  $event.preventDefault()
+                                  return _vm.jumpPage(link.page)
+                                }
                               }
-                            }
-                          },
-                          [_vm._v(_vm._s(_vm.pageLess2))]
-                        )
-                      ]
-                    ),
-                    _vm._v(" "),
-                    _c(
-                      "li",
-                      {
-                        directives: [
-                          {
-                            name: "show",
-                            rawName: "v-show",
-                            value: _vm.pageLess1 > 0,
-                            expression: "pageLess1 > 0"
-                          }
-                        ],
-                        staticClass: "page-item"
-                      },
-                      [
-                        _c(
-                          "a",
-                          {
-                            staticClass: "page-link",
-                            attrs: { href: "#less1" },
-                            on: {
-                              click: function($event) {
-                                $event.preventDefault()
-                                return _vm.jumpPage(_vm.pageLess1)
-                              }
-                            }
-                          },
-                          [_vm._v(_vm._s(_vm.pageLess1))]
-                        )
-                      ]
-                    ),
-                    _vm._v(" "),
-                    _c("li", { staticClass: "page-item" }, [
-                      _c("a", { staticClass: "page-link" }, [
-                        _vm._v(_vm._s(_vm.currentPage))
-                      ])
-                    ]),
-                    _vm._v(" "),
-                    _c(
-                      "li",
-                      {
-                        directives: [
-                          {
-                            name: "show",
-                            rawName: "v-show",
-                            value: _vm.pageMore1 <= _vm.maxPage,
-                            expression: "pageMore1 <= maxPage"
-                          }
-                        ],
-                        staticClass: "page-item"
-                      },
-                      [
-                        _c(
-                          "a",
-                          {
-                            staticClass: "page-link",
-                            attrs: { href: "#more1" },
-                            on: {
-                              click: function($event) {
-                                $event.preventDefault()
-                                return _vm.jumpPage(_vm.pageMore1)
-                              }
-                            }
-                          },
-                          [_vm._v(_vm._s(_vm.pageMore1))]
-                        )
-                      ]
-                    ),
-                    _vm._v(" "),
-                    _c(
-                      "li",
-                      {
-                        directives: [
-                          {
-                            name: "show",
-                            rawName: "v-show",
-                            value: _vm.pageMore2 <= _vm.maxPage,
-                            expression: "pageMore2 <= maxPage"
-                          }
-                        ],
-                        staticClass: "page-item"
-                      },
-                      [
-                        _c(
-                          "a",
-                          {
-                            staticClass: "page-link",
-                            attrs: { href: "#more2" },
-                            on: {
-                              click: function($event) {
-                                $event.preventDefault()
-                                return _vm.jumpPage(_vm.pageMore2)
-                              }
-                            }
-                          },
-                          [_vm._v(_vm._s(_vm.pageMore2))]
-                        )
-                      ]
-                    ),
-                    _vm._v(" "),
-                    _c(
-                      "li",
-                      {
-                        directives: [
-                          {
-                            name: "show",
-                            rawName: "v-show",
-                            value: _vm.currentPage < _vm.maxPage,
-                            expression: "currentPage < maxPage"
-                          }
-                        ],
-                        staticClass: "page-item"
-                      },
-                      [
-                        _c(
-                          "a",
-                          {
-                            staticClass: "page-link",
-                            attrs: { href: "#next" },
-                            on: {
-                              click: function($event) {
-                                $event.preventDefault()
-                                return _vm.nextPage($event)
-                              }
-                            }
-                          },
-                          [_vm._v("Next")]
-                        )
-                      ]
-                    )
-                  ])
+                            },
+                            [_vm._v(_vm._s(link.text))]
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "a",
+                            {
+                              directives: [
+                                {
+                                  name: "show",
+                                  rawName: "v-show",
+                                  value: link.current,
+                                  expression: "link.current"
+                                }
+                              ],
+                              staticClass: "page-link"
+                            },
+                            [_vm._v(_vm._s(link.text))]
+                          )
+                        ]
+                      )
+                    }),
+                    0
+                  )
                 ]
               )
             ])

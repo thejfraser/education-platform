@@ -21,7 +21,7 @@ Auth::routes();
 
 Route::name('post.')->prefix('posts')->group( function(){
     Route::get('/', 'PostController@index')->name('index');
-    Route::get('/{page}', 'PostController@index')->name('index')->where('page', '^[0-9]+$');
+    Route::get('/{page}', 'PostController@index')->name('indexpage')->where('page', '^[0-9]+$');
     Route::get('/create', 'PostController@create')->name('new')->middleware('can:create,App\Post');
     Route::get('/edit/{post}', 'PostController@edit')->name('edit')->middleware('can:update,post');
     Route::get('/{post:slug}', 'PostController@show')->name('show');

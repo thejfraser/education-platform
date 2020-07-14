@@ -2,6 +2,6 @@
 
 @section('content')
     <div class="container">
-        <post-excerpt-list page="{{ $page }}" max-page="{{$maxPage}}"></post-excerpt-list>
+        <post-excerpt-list base-url="{{route('post.index')}}/" page="{{ $page }}" max-page="{{$maxPage}}"></post-excerpt-list>
     </div>
 @endsection
