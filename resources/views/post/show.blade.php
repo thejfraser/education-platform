@@ -12,7 +12,9 @@
                     {!! nl2br($post->body)  !!}
                 </div>
                 <div class="col-12 col-md-4 col-lg-3 bg-light py-3">
-                    <em>Items</em>
+                    @can('update', $post)
+                        <a href="{{route('post.edit', $post->id)}}" class="btn btn-sm btn-outline-primary mb-2 w-100">Update Post</a>
+                    @endcan
                 </div>
             </main>
             <footer>
