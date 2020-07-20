@@ -23,6 +23,7 @@
         "vue-template-compiler": "^2.6.10"
     },
     "dependencies": {
+        "@tinymce/tinymce-vue": "^3.2.2",
         "jquery": "^3.5.1"
     }
 }

@@ -10,6 +10,7 @@
     <title>{{ config('app.name', 'Laravel') }}</title>
 
     <!-- Scripts -->
+    <script src="https://cdn.tiny.cloud/1/ckeza80cam7bzk1f8tjrz6vw4dutksq5ln2m9cpo032fta73/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
     <script src="{{ asset('js/app.js') }}" defer></script>
 
     <!-- Fonts -->
@@ -76,5 +77,7 @@
             @yield('content')
         </main>
     </div>
+
+    @yield('footer-scripts')
 </body>
 </html>
