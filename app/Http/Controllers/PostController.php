@@ -3,8 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Post;
+use App\Tools\ExcerptGenerator;
+use App\Tools\SlugGenerator;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Str;
+use Illuminate\Validation\Rule;
 
 class PostController extends Controller
 {
@@ -43,7 +48,7 @@ class PostController extends Controller
 
         return view('post.index', [
             'maxPage' => ceil($postCount / $postsPerPage),
-            'page' => $page + 1
+            'page' => $page + 1,
         ]);
     }
 
@@ -54,7 +59,7 @@ class PostController extends Controller
      */
     public function create()
     {
-        //
+        return view('post.form', ['post' => new Post()]);
     }
 
     /**
@@ -65,7 +70,24 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validationRules = $this->getValidationRules();
+
+        $data = $request->validate([
+            'title' => $validationRules['title'],
+            'body' => $validationRules['body'],
+            'excerpt' => $validationRules['excerpt'],
+        ]);
+
+        if (is_null($data['excerpt'])) {
+            $data['excerpt'] = (new ExcerptGenerator($data['body']))->get();
+        }
+
+        $data['slug'] = (new SlugGenerator($data['title']))->get();
+        $data['author_id'] = Auth::user()->id;
+
+        $post = Post::create($data);
+
+        return redirect(route('post.edit', $post))->with('created', true);
     }
 
     /**
@@ -91,7 +113,7 @@ class PostController extends Controller
      */
     public function edit(Post $post)
     {
-        return $post;
+        return view('post.form', ['post' => $post]);
     }
 
     /**
@@ -103,7 +125,29 @@ class PostController extends Controller
      */
     public function update(Request $request, Post $post)
     {
-        //
+        $validationRules = $this->getValidationRules();
+
+        $data = $request->validate([
+            'title' => $validationRules['title'],
+            'body' => $validationRules['body'],
+            'excerpt' => $validationRules['excerpt'],
+            'slug' => [
+                Rule::unique('posts')
+                    ->ignore($post->id),
+            ],
+        ]);
+
+        if (is_null($data['excerpt'])) {
+            $data['excerpt'] = (new ExcerptGenerator($data['body']))->get();
+        }
+
+        if (is_null($data['slug'])) {
+            $data['slug'] = (new SlugGenerator($data['title']))->get();
+        }
+
+        $post->update($data);
+
+        return back()->with('updated', true);
     }
 
     /**
@@ -115,5 +159,16 @@ class PostController extends Controller
     public function destroy(Post $post)
     {
         //
+    }
+
+
+    private function getValidationRules()
+    {
+        return [
+            'title' => 'required|max:65535',
+            'slug' => 'unique:posts',
+            'excerpt' => 'max:65535',
+            'body' => 'required',
+        ];
     }
 }

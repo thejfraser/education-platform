@@ -9,7 +9,7 @@
             </header>
             <main class="row align-items-stretch">
                 <div class="col-12 col-md-8 col-lg-9">
-                    {!! nl2br($post->body)  !!}
+                    {!! $post->body !!}
                 </div>
                 <div class="col-12 col-md-4 col-lg-3 bg-light py-3">
                     @can('update', $post)

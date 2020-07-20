@@ -163,6 +163,11 @@ class PostTest extends TestCase
     {
         $this->get(route('post.new'))
             ->assertStatus(403);
+
+        $user = factory(User::class)->create();
+        $this->actingAs($user)
+            ->get(route('post.new'))
+            ->assertStatus(403);
     }
 
     public function test_it_can_create_with_permission()

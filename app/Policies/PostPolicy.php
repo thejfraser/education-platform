@@ -44,7 +44,11 @@ class PostPolicy
      */
     public function create(User $user)
     {
-        return true;
+        if ($user->can('edit-own-posts') || $user->can('edit-any-posts')) {
+            return true;
+        }
+
+        return false;
     }
 
     /**
